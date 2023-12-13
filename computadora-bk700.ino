@@ -2,12 +2,32 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
 #include <Adafruit_MPU6050.h>
+#include <SD.h>
 
 Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 Adafruit_MPU6050 mpu = Adafruit_MPU6050();
 
+SD sd = SD();
+File datos;
+
+//char dataStr[100] = "";
+//char buffer[7];
+
 void setup() {
   Serial.begin(9600);
+
+  //if (!SD.begin(chipSelect))
+  //lo del beep
+
+  datos = SD.open("vuelo.txt", FILE_WRITE);  
+   if (datos) // si se abriò correctamete
+  {
+    datos.println("presion, aceleracion, rotacion y temperatura: ");
+    datos.close();
+  }else 
+    Serial.println("Error abriendo vuelo.txt");
+  //Serial.println("l para leer lo que està dentro de vuelo"); (seria para que despliegue todo, pero todavia estoy vienod como conectarlo)
+  }
 
   if (!bmp.begin())
   {
