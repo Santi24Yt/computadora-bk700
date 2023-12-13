@@ -2,25 +2,40 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
 #include <Adafruit_MPU6050.h>
+#include <SD.h> //creo que esa es la libreria
 
 Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 Adafruit_MPU6050 mpu = Adafruit_MPU6050();
+Adafruit_Sensor sensor = Adafruit_Sensor();
+SD sd = SD();
+
+//insertar pines de la sd
 
 void setup() {
   Serial.begin(9600);
 
   if (!bmp.begin())
   {
-    // No se logró inicializar el sensor
-    // hacer algo (posiblemente beep o algo así)
+    //funcion del buzzer para decir que no jalò
+    digitalWrite(Sensor,HIGH); //lo prende
+    delay(1000); // va a hacer que dure un sec el sonido
+    digitalWrite(Sensor,LOW); //lo apaga
   }
 
   if (!mpu.begin())
   {
-    // No se logró inicializar el sensor
-    // hacer algo (posiblemente beep o algo así)
+    digitalWrite(Sensor,HIGH); //lo prende
+    delay(1000); // va a hacer que dure un sec el sonido
+    digitalWrite(Sensor,LOW); //lo apaga
   }else{
     mpu.setAccelerometerRange(MPU6050_RANGE_4_G);
+  }
+
+  if (!sd.begin())
+  {
+    digitalWrite(Sensor,HIGH); //lo prende
+    delay(1000); // va a hacer que dure un sec el sonido
+    digitalWrite(Sensor,LOW); //lo apaga
   }
 }
 
