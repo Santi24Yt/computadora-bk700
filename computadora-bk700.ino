@@ -17,7 +17,24 @@ void setup() {
   Serial.begin(9600);
 
   //if (!SD.begin(chipSelect))
-  //lo del beep
+  //lo del bee
+  
+  while (!mpu6050.begin() || !bmp180.begin()) 
+  {
+    digitalWrite(Sensor,HIGH); //lo prende
+    delay(2000); // va a hacer que dure un sec el sonido
+    digitalWrite(Sensor,LOW); //lo apaga
+  }
+
+  //ahorita vemos
+    digitalWrite(Sensor,HIGH); //lo prende
+    delay(1000); // va a hacer que dure un sec el sonido
+    digitalWrite(Sensor,LOW); //lo apaga
+    delay(500);
+    digitalWrite(Sensor,HIGH); //lo prende
+    delay(1000); // va a hacer que dure un sec el sonido
+    digitalWrite(Sensor,LOW); //lo apaga
+
 
   datos = SD.open("vuelo.txt", FILE_WRITE);  
    if (datos) // si se abriò correctamete
@@ -29,19 +46,7 @@ void setup() {
   //Serial.println("l para leer lo que està dentro de vuelo"); (seria para que despliegue todo, pero todavia estoy vienod como conectarlo)
   }
 
-  if (!bmp.begin())
-  {
-    // No se logró inicializar el sensor
-    // hacer algo (posiblemente beep o algo así)
-  }
-
-  if (!mpu.begin())
-  {
-    // No se logró inicializar el sensor
-    // hacer algo (posiblemente beep o algo así)
-  }else{
-    mpu.setAccelerometerRange(MPU6050_RANGE_4_G);
-  }
+  mpu.setAccelerometerRange(MPU6050_RANGE_4_G);
 }
 
 void loop() {
