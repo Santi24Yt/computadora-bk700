@@ -91,13 +91,13 @@ void setup() {
   mpu.setAccelerometerRange(MPU6050_RANGE_4_G);
 
   // Todo es correcto, sonar el buzzer
-  // digitalWrite(buzzer, HIGH);
-  // delay(300);
-  // digitalWrite(buzzer, LOW);
-  // delay(100);
-  // digitalWrite(buzzer, HIGH);
-  // delay(1000);
-  // digitalWrite(buzzer, LOW);
+  digitalWrite(buzzer, HIGH);
+  delay(300);
+  digitalWrite(buzzer, LOW);
+  delay(100);
+  digitalWrite(buzzer, HIGH);
+  delay(1000);
+  digitalWrite(buzzer, LOW);
 
 }
 
@@ -106,9 +106,8 @@ void setup() {
 // Número de iteraciones
 unsigned char iter = 0;
 
-// Inicializar la altitud base a un valor conocido para poder determinar cuando no ha sido detectada aún
-// (no estoy seguro si es eficiente hacerlo de esta manera)
-int altitudbase = -255;
+// presion base
+float presionbase = -1000;
 // Alocar la altura
 float altura;
 // Alocar el apogeo
@@ -129,22 +128,18 @@ void loop() {
   // Obtener los eventos de aceleración, giroscopio y temperatura
   mpu.getEvent(&a, &g, &temp); 
 
-  // Checar que haya una medición disponible
-  if (p.pressure)
-  { 
-    // Determinar la altura
-    // Si aún no se establece la altitud base entonces establecerla
-    if (altitudbase == -255)
-    {
-      altitudbase = (int)bmp.pressureToAltitude(SENSORS_PRESSURE_SEALEVELHPA, p.pressure);
-    }
-    // Calcular la altura en base a la altitud actual y la altitud base
-    altura = bmp.pressureToAltitude(SENSORS_PRESSURE_SEALEVELHPA, p.pressure) - altitudbase; 
-    // Checar si la altura actual es mayor a la máxima
-    if (altura > apogeo)
-    {
-      apogeo = altura;
-    }
+  // Determinar la altura
+  // Si aún no se establece la presión (altitud) base entonces establecerla
+  if (presionbase == -1000)
+  {
+    presionbase = p.pressure;
+  }
+  // Calcular la altura en base a la altitud actual y la presion (altitud) base
+  altura = bmp.pressureToAltitude(presionbase, p.pressure); 
+  // Checar si la altura actual es mayor a la máxima
+  if (altura > apogeo)
+  {
+    apogeo = altura;
   }
 
   accelz = a.acceleration.z;
@@ -157,17 +152,20 @@ void loop() {
   }
 
   // Si ya despegó y la altura es mayor a 20 y ya pasó el apogeo entonces pasar a la fase 2 y desplegar el sistema de recuperación
-  if (fase == 1 && altura >= 20 && altura <= apogeo)
+  if (fase == 1 && altura >= 22 && altura <= apogeo-5)
   {
     fase = 2;
     digitalWrite(deploy, HIGH);
+    delay(1000);
+    digitalWrite(deploy, LOW);
     Serial.println("CAMBIO A FASE 2");
   }
 
 
   if (fase == 2)
   {
-    // digitalWrite(buzzer, HIGH);
+    digitalWrite(buzzer, HIGH);
+    // Señales de estado
   }
 
   
@@ -198,7 +196,7 @@ void loop() {
   archivo.print(",");
   // Serial.print(", Z: ");
   // Serial.print(a.acceleration.z);
-  archivo.print(a.acceleration.z);
+  archivo.print(accelz);
   archivo.print(",");
   // Serial.println(" m/s^2");
 
@@ -242,5 +240,3 @@ void fatal(String err)
   Serial.println(err);
   while(1);
 }
-
-
