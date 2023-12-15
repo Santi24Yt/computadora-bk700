@@ -19,7 +19,7 @@ void setup() {
   //if (!SD.begin(chipSelect))
   //lo del bee
   
-  while (!mpu6050.begin() || !bmp180.begin()) 
+  while (!mpu6050.begin() && !bmp180.begin()) 
   {
     digitalWrite(Sensor,HIGH); //lo prende
     delay(2000); // va a hacer que dure un sec el sonido
@@ -84,4 +84,14 @@ void loop() {
 
   Serial.println("----------");
   delay(500);
+  //eso fue datos sensores, ahora paracaidas
+
+  float altura =  2020 + (temp.temperature / 6.50) * (((p.pressure / 101200)^((9.8 * 0.029) / (8.314 *6.50)))-1)
+
+  //hacer que si altura > apogeo, entonces apogeo = altura
+  
+  if (altura > 20 && altura <= apogeo)
+  {
+ //señal para detonar el e-match aaaaaaaaaaaaaa
+  }
 }
