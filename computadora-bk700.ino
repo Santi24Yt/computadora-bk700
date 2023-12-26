@@ -23,6 +23,8 @@
 Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 // Definir el sensor MPU6050
 Adafruit_MPU6050 mpu = Adafruit_MPU6050();
+//para el tiempo
+unsigned long tiempo=0;
 
 // Definir el archivo en el que se van a guardar los datos
 File archivo;
@@ -71,7 +73,7 @@ void setup() {
   }
 
   // Escribir en el archivo el nombre de las columnas de datos
-  archivo.println("presion,altura,aceleracion x,aceleracion y,aceleracion z,rotacion x,rotacion y,rotacion z,temperatura");
+  archivo.println("tiempo,presion,altura,aceleracion x,aceleracion y,aceleracion z,rotacion x,rotacion y,rotacion z,temperatura");
   // Guardar los datos sin cerrar el archivo
   archivo.flush();
 
@@ -149,6 +151,8 @@ void loop() {
     // Fase 1 es que ya despegó
     fase = 1;
     Serial.println("CAMBIO A FASE 1");
+    //intento de que aquí marque 0 y no desde que se prende, no hay mucha fe
+    tiempo = millis();
   }
 
   // Si ya despegó y la altura es mayor a 20 y ya pasó el apogeo entonces pasar a la fase 2 y desplegar el sistema de recuperación
@@ -168,8 +172,10 @@ void loop() {
     // Señales de estado
   }
 
+  //escribir el tiempo 
+  archivo.print(tiempo,4);
+  archivo.print(",");
   
-
   if (p.pressure)
   {
     // Escribir la presión
@@ -196,7 +202,7 @@ void loop() {
   archivo.print(",");
   // Serial.print(", Z: ");
   // Serial.print(a.acceleration.z);
-  archivo.print(accelz);
+  archivo.print(a.acceleration.z);
   archivo.print(",");
   // Serial.println(" m/s^2");
 
