@@ -25,6 +25,7 @@ Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 Adafruit_MPU6050 mpu = Adafruit_MPU6050();
 //para el tiempo
 unsigned long tiempo=0;
+unsigned long otrotiempo=1000;
 
 // Definir el archivo en el que se van a guardar los datos
 File archivo;
@@ -164,6 +165,10 @@ void loop() {
     digitalWrite(deploy, LOW);
     Serial.println("CAMBIO A FASE 2");
   }
+  if (millis() - otrotiempo >= tiempo)
+{
+  otrotiempo =millis();
+}
 
 
   if (fase == 2)
@@ -173,7 +178,7 @@ void loop() {
   }
 
   //escribir el tiempo 
-  archivo.print(tiempo,4);
+  archivo.print(otrotiempo);
   archivo.print(",");
   
   if (p.pressure)
