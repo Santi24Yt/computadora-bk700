@@ -8,11 +8,12 @@
 
 
 // Cuando la aceleración vertical sea mayor a 2m/s^2 posiblemente ya despegó (ya que usualmente es -10 m/s^2 por la graveda#define ACCZ_MIN_DESPEGUE 2
+// Poner a -11 o algo así para las pruebas
 #define ACCZ_MIN_DESP 2
-// Altura mínima para la activacion del sistema de recuperación
+// Altura mínima para la activacion del sistema de recuperación, poner a 8 o algo así para las pruebas
 #define ALT_MIN_REC 22
 // Offset de la altura para evitar que se dispare el sistema de recuperación antes de que llegue verdaderamente al apogeo
-// es decir cuantos metros tiene que bajar después del apogeo para que se despliegue
+// es decir cuantos metros tiene que bajar después del apogeo para que se despliegue, poner a 4 o mayor para las pruebas (tal vez 3)
 #define ALT_OFF 5
 
 
