@@ -17,6 +17,9 @@
 #define ALT_OFF 5
 
 
+#define ITER_FLUSH 100
+
+
 // Librería para comunicación I²C
 #include <Wire.h>
 // Librería para manejar más fácilmente los sensores
@@ -117,6 +120,8 @@ float apogeo;
 
 // Alocar la aceleración vertical
 float accelz;
+
+int iter = 0;
 
 // Fases de vuelo, fase 0 es antes del despegue
 unsigned char fase = 0;
@@ -265,6 +270,14 @@ void loop() {
   archivo.print(temp.temperature);
   archivo.println();
   // Serial.println(" degC");
+
+  iter++;
+
+  if (iter == ITER_FLUSH)
+  {
+    archivo.flush();
+    iter = 0;
+  }
 
   // Delay entre loops potencialmente inecesario
   // delay(500);
