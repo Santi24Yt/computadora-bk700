@@ -9,34 +9,40 @@ acey=data.iloc[:,4]
 acez=data.iloc[:,5]
 temp=data.iloc[:,9]
 
-# Graficando datos
-plt.figure(figsize=(10, 8))
-#print (data)
+total_acceleration = (acex**2 + acey**2 + acez**2)**0.5
 
+# Configuración de subgráficas
+plt.figure(figsize=(12, 10))
+
+# Primera gráfica - Presión respecto al tiempo
 plt.subplot(221)
-plt.plot(time, press)
-plt.title('Presion rescpecto Tiempo')
+plt.plot(time, press, color='r')
+plt.title('Presión respecto al Tiempo')
 plt.xlabel('Tiempo (sec)')
-plt.ylabel('Presion ')
-#plt.show()
+plt.ylabel('Presión')
 
-#Segunda grafica
+# Segunda gráfica - Altura respecto al tiempo
 plt.subplot(222)
-plt.plot(time, alt)
-plt.title('Altura respecto Tiempo ')
-plt.xlabel('Timpo (sec)')
-plt.ylabel('Altura')
-#plt.show()
-
-# Tercera Grafica
-# Cuarta Grafica
-plt.subplot(223)
-plt.plot(time, temp)
-plt.title('Temperatura rescpecto Tiempo')
+plt.plot(time, alt, color='g')
+plt.title('Altura respecto al Tiempo')
 plt.xlabel('Tiempo (sec)')
-plt.ylabel('Temperatura ')
-#plt.show()
+plt.ylabel('Altura')
 
-# Ajustamos el layout para que no se sobreempalme
+# Tercera gráfica - Temperatura respecto al tiempo
+plt.subplot(223)
+plt.plot(time, temp, color='b')
+plt.title('Temperatura respecto al Tiempo')
+plt.xlabel('Tiempo (sec)')
+plt.ylabel('Temperatura')
+
+# Cuarta gráfica - Aceleración total respecto al tiempo
+plt.subplot(224)
+plt.plot(time, total_acceleration, color='purple')
+plt.title('Aceleración Total respecto al Tiempo')
+plt.xlabel('Tiempo (sec)')
+plt.ylabel('Aceleración Total')
+
+# Ajustar el diseño para evitar superposiciones
 plt.tight_layout()
 plt.show()
+          
