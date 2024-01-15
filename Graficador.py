@@ -1,48 +1,76 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-data= pd.read_csv("VUELO30.TXT",header=0,delimiter=",")
-time=data.iloc[:,0]
-press=data.iloc[:,1]
-alt=data.iloc[:,2]
-acex=data.iloc[:,3]
-acey=data.iloc[:,4]
-acez=data.iloc[:,5]
-temp=data.iloc[:,9]
+from sys import argv, exit
+from os import path
 
+from csv import reader as read
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+if len(argv) < 2 or not path.exists(argv[1]):
+    exit("Archivo inválido")
+
+file = open(argv[1])
+
+raw = read(file)
+
+data = list()
+
+marcadores = list()
+
+ln = 0
+for row in raw:
+    if ln == 0:
+        ln = 1
+        for column in row:
+            data.append([column])
+
+        continue
+
+    for i in range(len(row)):
+        column = row[i]
+        if i == 0 and column[0] == '-':
+            column = column[1:]
+            marcadores.append((float(column), ln))
+
+        data[i].append(column)
+       
+    ln += 1
+       
+datos = dict()
+
+for a in data:
+    datos[a[0]] = np.array(a[1:], dtype=float)
+
+print(datos)
+
+
+for k in datos.keys():
+    p = plt.figure()
+    plt.plot(datos["tiempo"], datos[k])
+    plt.title(k)
+    plt.xlabel("Tiempo")
+    plt.ylabel(k)
+
+    for marcador in marcadores:
+        print(marcador)
+        print(datos[k][marcador[1]])
+        plt.plot(marcador[0], datos[k][marcador[1]], "ro")
+
+    p.show()
+    
+
+acex = datos["aceleracion x"]
+acey = datos["aceleracion y"]
+acez = datos["aceleracion z"]
+time = datos["tiempo"]
 total_acceleration = (acex**2 + acey**2 + acez**2)**0.5
 
-# Configuración de subgráficas
-plt.figure(figsize=(12, 10))
-
-# Primera gráfica - Presión respecto al tiempo
-plt.subplot(221)
-plt.plot(time, press, color='r')
-plt.title('Presión respecto al Tiempo')
-plt.xlabel('Tiempo (sec)')
-plt.ylabel('Presión')
-
-# Segunda gráfica - Altura respecto al tiempo
-plt.subplot(222)
-plt.plot(time, alt, color='g')
-plt.title('Altura respecto al Tiempo')
-plt.xlabel('Tiempo (sec)')
-plt.ylabel('Altura')
-
-# Tercera gráfica - Temperatura respecto al tiempo
-plt.subplot(223)
-plt.plot(time, temp, color='b')
-plt.title('Temperatura respecto al Tiempo')
-plt.xlabel('Tiempo (sec)')
-plt.ylabel('Temperatura')
-
 # Cuarta gráfica - Aceleración total respecto al tiempo
-plt.subplot(224)
 plt.plot(time, total_acceleration, color='purple')
 plt.title('Aceleración Total respecto al Tiempo')
 plt.xlabel('Tiempo (sec)')
 plt.ylabel('Aceleración Total')
 
 # Ajustar el diseño para evitar superposiciones
-plt.tight_layout()
 plt.show()
           

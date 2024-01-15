@@ -158,12 +158,14 @@ void loop() {
     // Fase 1 es que ya despegó
     fase = 1;
     // Serial.println("CAMBIO A FASE 1");
+    archivo.print('-');
   }
 
   // Si ya despegó y la altura es mayor a 20 y ya pasó el apogeo entonces pasar a la fase 2 y desplegar el sistema de recuperación
   if (fase == 1 && altura >= ALT_MIN_REC && altura <= apogeo - ALT_OFF)
   {
     fase = 2;
+    archivo.print('-');
     digitalWrite(deploy, HIGH);
     // Se va a perder alrededor de 1s de datos en este punto
     delay(1000);
@@ -199,7 +201,7 @@ void loop() {
       // Para cada caracter (digito) antes del final dar la señal
       for (char i = 0; i < 8; i++)
       {
-        if (s[i] == '\n')
+        if (s[i] == '\0')
         {
           break;
         }
@@ -207,16 +209,16 @@ void loop() {
         // El digito se identifica con los pulsos cada 100ms
         for (char j = 0; j < n; j++)
         {
-          delay(100);
+          delay(300);
           digitalWrite(buzzer, HIGH);
-          delay(100);
+          delay(300);
           digitalWrite(buzzer, LOW);
         }
         // Cuando acaba el dígito se espera 500ms para poder identificar la separación de digitos
-        delay(500);
+        delay(1000);
       }
       // Espera 2s para poder repetir denuevo la señal
-      delay(2000);
+      delay(3000);
     }
   }
 
@@ -270,6 +272,9 @@ void loop() {
   archivo.print(temp.temperature);
   archivo.println();
   // Serial.println(" degC");
+
+  // Serial.print("Fase: ");
+  // Serial.print(fase);
 
   iter++;
 
