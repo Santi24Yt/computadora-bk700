@@ -159,6 +159,11 @@ void loop() {
     fase = 1;
     // Serial.println("CAMBIO A FASE 1");
     archivo.print('-');
+
+    // Sonido para las pruebas
+    // digitalWrite(buzzer, HIGH);
+    // delay(500);
+    // digitalWrite(buzzer, LOW);
   }
 
   // Si ya despegó y la altura es mayor a 20 y ya pasó el apogeo entonces pasar a la fase 2 y desplegar el sistema de recuperación
@@ -166,6 +171,22 @@ void loop() {
   {
     fase = 2;
     archivo.print('-');
+
+    // Sonido para las pruebas
+    // digitalWrite(buzzer, HIGH);
+    // delay(100);
+    // digitalWrite(buzzer, LOW);
+    // delay(100);
+    // digitalWrite(buzzer, HIGH);
+    // delay(100);
+    // digitalWrite(buzzer, LOW);
+    // delay(100);
+    // digitalWrite(buzzer, HIGH);
+    // delay(100);
+    // digitalWrite(buzzer, LOW);
+    // delay(3000);
+
+
     digitalWrite(deploy, HIGH);
     // Se va a perder alrededor de 1s de datos en este punto
     delay(1000);
@@ -274,7 +295,7 @@ void loop() {
   // Serial.println(" degC");
 
   // Serial.print("Fase: ");
-  // Serial.print(fase);
+  // Serial.println(fase);
 
   iter++;
 
