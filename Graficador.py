@@ -49,19 +49,22 @@ del data
 def movingaverage(a, w):
     return np.convolve(a, np.ones(w), "valid") / w
 
+datosavg = dict()
+
 w = 10
 for k in datos.keys():
     if k == "tiempo":
+        datosavg["tiempo"] = datos["tiempo"][:-w+1]
         continue
 
-    datos[k] = movingaverage(datos[k], w)
+    datosavg[k] = movingaverage(datos[k], w)
 
-datos["tiempo"] = datos["tiempo"][:-w+1]
 
 c = 0
 for k in datos.keys():
     p = plt.figure()
-    plt.plot(datos["tiempo"], datos[k], color="C"+str(c))
+    plt.plot(datos["tiempo"], datos[k], "--", color="grey")
+    plt.plot(datosavg["tiempo"], datosavg[k], color="C"+str(c))
     plt.xlabel("tiempo")
     plt.ylabel(k)
     plt.grid()
