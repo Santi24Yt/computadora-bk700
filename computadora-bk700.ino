@@ -7,9 +7,11 @@
 #define deploy 3
 
 
-// Cuando la aceleración vertical sea mayor a 2m/s^2 posiblemente ya despegó (ya que usualmente es -10 m/s^2 por la graveda#define ACCZ_MIN_DESPEGUE 2
-// Poner a -11 o algo así para las pruebas
-#define ACCZ_MIN_DESP 2
+// Cuando la aceleración vertical (eje y, debido a la orientación de la placa)
+// sea mayor a 50 m/s^2 posiblemente ya despegó (ya que usualmente es 9-10 m/s^2 por la gravedad
+// Poner a más de 40 para el lanzamiento
+// Poner a 30-35 o algo así para las pruebas
+#define ACC_MIN_DESP 30
 // Altura mínima para la activacion del sistema de recuperación, poner a 8 o algo así para las pruebas
 #define ALT_MIN_REC 22
 // Offset de la altura para evitar que se dispare el sistema de recuperación antes de que llegue verdaderamente al apogeo
@@ -119,7 +121,7 @@ float altura;
 float apogeo;
 
 // Alocar la aceleración vertical
-float accelz;
+float accely;
 
 int iter = 0;
 
@@ -151,9 +153,9 @@ void loop() {
 
   // TODO: Usar switch posiblemente mejorar velocidad
 
-  accelz = a.acceleration.z;
-  // Cuando la aceleración vertical sea mayor a 2m/s^2 posiblemente ya despegó (ya que usualmente es -10 m/s^2 por la gravedad)
-  if (fase == 0 && accelz >= ACCZ_MIN_DESP)
+  accely = a.acceleration.y;
+  // Cuando la aceleración vertical sea mayor a 50 m/s^2 posiblemente ya despegó (ya que usualmente es 9-10 m/s^2 por la gravedad)
+  if (fase == 0 && accely >= ACC_MIN_DESP)
   {
     // Fase 1 es que ya despegó
     fase = 1;
@@ -266,11 +268,11 @@ void loop() {
   archivo.print(',');
   // Serial.print(", Y: ");
   // Serial.print(a.acceleration.y);
-  archivo.print(a.acceleration.y);
+  archivo.print(accely);
   archivo.print(',');
   // Serial.print(", Z: ");
   // Serial.print(a.acceleration.z);
-  archivo.print(accelz);
+  archivo.print(a.acceleration.z);
   archivo.print(',');
   // Serial.println(" m/s^2");
 
