@@ -18,8 +18,11 @@
 // es decir cuantos metros tiene que bajar después del apogeo para que se despliegue, poner a 4 o mayor para las pruebas (tal vez 3)
 #define ALT_OFF 5
 
-
+// Iteraciones que tienen que pasar para que escriba al archivo
+// en promedio tarda 45ms por iter, entonces escribe al archivo cada
+// 45ms * iter =
 #define ITER_FLUSH 100
+// 4.5s
 
 
 // Librería para comunicación I²C
@@ -145,8 +148,8 @@ void loop() {
   }
   // Calcular la altura en base a la altitud actual y la presion (altitud) base
   altura = bmp.pressureToAltitude(presionbase, p.pressure); 
-  // Checar si la altura actual es mayor a la máxima
-  if (altura > apogeo)
+  // Checar si la altura actual es mayor a la máxima (solo si está en fase de vuelo)
+  if (fase == 1 && altura > apogeo)
   {
     apogeo = altura;
   }
@@ -220,7 +223,7 @@ void loop() {
     {
       // Obtener el apogeo y convertirlo a string para poder leer sus caracteres en orden
       char s[8];
-      sprintf(s, "%d", (int)altura);
+      sprintf(s, "%d", (int)apogeo);
       // Para cada caracter (digito) antes del final dar la señal
       for (char i = 0; i < 8; i++)
       {
