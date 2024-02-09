@@ -1,0 +1,51 @@
+#include <SoftwareSerial.h>
+#include <wire.h>
+
+// AT+C003 // canal de comunicacion
+
+
+SoftwareSerial HC12(11, 10); // tx al pin 11, rx al pin 10
+const int boton = 2; // boton al pin 2
+
+void setup() {
+  Serial.begin(9600);
+  HC12.begin(9600);
+  pinMode(boton, INPUT);
+}
+
+void loop() {
+  if (digitalRead(boton) == HIGH) {  // se prendió el botón :o
+    HC12.println("kaboom");  // mensaje porque sino chilla el hc
+    delay(2000);
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+// para el otro lado
+
+#include <SoftwareSerial.h>
+#include <wire.h>
+
+// AT+C003 // canal de comunicacion
+
+SoftwareSerial HC12(11, 10); // tx al pin 11, rx al pin 10
+const int match = 3; // e-match al pin 3
+
+void setup() {
+  Serial.begin(9600);
+  HC12.begin(9600);
+  pinMode(match, OUTPUT);
+}
+
+void loop() {
+   if (HC12.available() > 0) {  // para ver si se le mandó algo (?
+    String mensaje = HC12.readString();  // lee el mensaje
+  }
+   if (mensaje == "kaboom") {
+    digitalWrite(match, HIGH);
+    delay(1000); // no sé si con eso sea suficionete para prender le motor
+    digitalWrite(match, LOW);
+  }
+}
+
+// yyy no sé si necesitamos màs ematch conetados :o
