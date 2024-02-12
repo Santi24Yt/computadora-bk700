@@ -1,11 +1,11 @@
 #include <SoftwareSerial.h>
 #include <wire.h>
 
-// AT+C003 // canal de comunicacion
+#define boton 4
 
+// AT+C003 canal de comunicacion
 
-SoftwareSerial HC12(11, 10); // tx al pin 11, rx al pin 10
-const int boton = 2; // boton al pin 2
+SoftwareSerial HC12(8, 7); // tx al pin 8, rx al pin 7
 
 void setup() {
   Serial.begin(9600);
@@ -26,10 +26,11 @@ void loop() {
 #include <SoftwareSerial.h>
 #include <wire.h>
 
+#define match 3
+
 // AT+C003 // canal de comunicacion
 
-SoftwareSerial HC12(11, 10); // tx al pin 11, rx al pin 10
-const int match = 3; // e-match al pin 3
+SoftwareSerial HC12(8, 7); // tx al pin 8, rx al pin 7
 
 void setup() {
   Serial.begin(9600);
