@@ -1,5 +1,5 @@
 // Constantes
-// Número máximo de archivos que puede crear en la sd (máximo 254 creo)
+// Número máximo de // archivo. que puede crear en la sd (máximo 254 creo)
 #define MAX_FILES 99
 // El pin en el que está conectado el buzzer (D2 en este caso)
 #define buzzer 2
@@ -19,7 +19,7 @@
 #define ALT_OFF 5
 
 // Iteraciones que tienen que pasar para que escriba al archivo
-// en promedio tarda 45ms por iter, entonces escribe al archivo cada
+// en promedio tarda 45ms por iter, entonces escribe al // archivo.cada
 // 45ms * iter =
 #define ITER_FLUSH 100
 // 4.5s
@@ -43,8 +43,8 @@ Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 // Definir el sensor MPU6050
 Adafruit_MPU6050 mpu = Adafruit_MPU6050();
 
-// Definir el archivo en el que se van a guardar los datos
-File archivo;
+// Definir el // archivo.en el que se van a guardar los datos
+// File archivo.
 
 // Definir firma de la función que detiene el programa si hay algún error fatal
 void fatal(char err);
@@ -59,14 +59,14 @@ void setup() {
   pinMode(deploy, OUTPUT);
 
   // Checar si se puede inicializar la sd
-  if (!SD.begin())
+  /* if (!SD.begin())
   {
     fatal('a');
   }
 
-  // Nombre default del archivo de datos
+  // Nombre default del // archivo.de datos
   char name[15];
-  // Revisar que número de archivo de vuelo no existe para poder crear uno en ese caso
+  // Revisar que número de // archivo.de vuelo no existe para poder crear uno en ese caso
   for (unsigned char i = 0; i <= MAX_FILES; i++)
   {
     sprintf(name, "vuelo%d.txt", i);
@@ -82,18 +82,18 @@ void setup() {
   }
 
   // Abrir el archivo
-  archivo = SD.open(name, FILE_WRITE);
+  // archivo.= SD.open(name, FILE_WRITE);
   // Checar si sí abrió el archivo
-  if (!archivo)
+  if (!// archivo.
   {
     fatal('b');
   }
 
-  // Escribir en el archivo el nombre de las columnas de datos
-  archivo.println("tiempo,presion,altura,aceleracion x,aceleracion y,aceleracion z,rotacion x,rotacion y,rotacion z,temperatura");
+  // Escribir en el // archivo.el nombre de las columnas de datos
+  // archivo.println("tiempo,presion,altura,aceleracion x,aceleracion y,aceleracion z,rotacion x,rotacion y,rotacion z,temperatura");
   // Guardar los datos sin cerrar el archivo
-  archivo.flush();
-
+  // archivo.flush();
+  */
   // Checar si se detecta el BMP
   if (!bmp.begin())
   {
@@ -161,7 +161,7 @@ void loop() {
     // Fase 1 es que ya despegó
     fase = 1;
     // Serial.println("CAMBIO A FASE 1");
-    archivo.print('-');
+    // archivo.print('-');
 
     // Sonido para las pruebas
     digitalWrite(buzzer, HIGH);
@@ -173,7 +173,7 @@ void loop() {
   if (fase == 1 && altura >= ALT_MIN_REC && altura <= apogeo - ALT_OFF)
   {
     fase = 2;
-    archivo.print('-');
+    // archivo.print('-');
 
     // Sonido para las pruebas
     digitalWrite(buzzer, HIGH);
@@ -215,7 +215,7 @@ void loop() {
   // Detener la recolección de datos y realizar las señales de estado hasta ser apagada
   if (fase == 3)
   {
-    archivo.close();
+    // // archivo.close();
     // Señales de estado
     while (1)
     {
@@ -247,54 +247,54 @@ void loop() {
   }
 
   //escribir el tiempo 
-  archivo.print(millis());
-  archivo.print(',');
+  // archivo.print(millis());
+  // archivo.print(',');
   
   // Escribir la presión
   // Serial.print("Pressure: ");
   // Serial.print(p.pressure);
-  archivo.print(p.pressure);
-  archivo.print(',');
+  // archivo.print(p.pressure);
+  // archivo.print(',');
   // Serial.println(" hPa");
   // Escribir la altura
   // Serial.print("Altura: ");
   // Serial.println(altura);
-  archivo.print(altura);
-  archivo.print(',');
+  // archivo.print(altura);
+  // archivo.print(',');
 
   // Escribir datos del MPU
   // Serial.print("Acceleration X: ");
   // Serial.print(a.acceleration.x);
-  archivo.print(a.acceleration.x);
-  archivo.print(',');
+  // archivo.print(a.acceleration.x);
+  // archivo.print(',');
   // Serial.print(", Y: ");
   // Serial.print(a.acceleration.y);
-  archivo.print(accely);
-  archivo.print(',');
+  // archivo.print(accely);
+  // archivo.print(',');
   // Serial.print(", Z: ");
   // Serial.print(a.acceleration.z);
-  archivo.print(a.acceleration.z);
-  archivo.print(',');
+  // archivo.print(a.acceleration.z);
+  // archivo.print(',');
   // Serial.println(" m/s^2");
 
   // Serial.print("Rotation X: ");
   // Serial.print(g.gyro.x);
-  archivo.print(g.gyro.x);
-  archivo.print(',');
+  // archivo.print(g.gyro.x);
+  // archivo.print(',');
   // Serial.print(", Y: ");
   // Serial.print(g.gyro.y);
-  archivo.print(g.gyro.y);
-  archivo.print(',');
+  // archivo.print(g.gyro.y);
+  // archivo.print(',');
   // Serial.print(", Z: ");
   // Serial.print(g.gyro.z);
-  archivo.print(g.gyro.z);
-  archivo.print(',');
+  // archivo.print(g.gyro.z);
+  // archivo.print(',');
   // Serial.println(" rad/s");
 
   // Serial.print("Temperature: ");
   // Serial.print(temp.temperature);
-  archivo.print(temp.temperature);
-  archivo.println();
+  // archivo.print(temp.temperature);
+  // archivo.println();
   // Serial.println(" degC");
 
   // Serial.print("Fase: ");
@@ -304,7 +304,7 @@ void loop() {
 
   if (iter == ITER_FLUSH)
   {
-    archivo.flush();
+    // archivo.flush();
     iter = 0;
   }
 

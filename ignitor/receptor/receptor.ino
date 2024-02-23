@@ -38,6 +38,8 @@ void loop() {
       HC12.write(Serial.read());
     }
   } else {
+    digitalWrite(setout, HIGH);
+
      if (HC12.available()) {  // para ver si se le mandó algo (?
        if (HC12.parseInt() == contra) {
         Serial.println("1");
